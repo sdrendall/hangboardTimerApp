@@ -1,0 +1,38 @@
+#:kivy 1.7.2
+#:import math math
+
+<Timer>:
+	Label:
+		font_size: 70
+		pos: self.pos
+
+<mainWindow>:
+
+	# Rep Counter
+	Label:
+		font_size: 70
+		center_x: root.width/5
+		center_y: root.center_y
+		text: str(math.floor(root.repCounter.value))
+		
+	# Hold Timer
+	Label:
+		font_size: 70
+		center_x: root.width*2/5
+		center_y: root.center_y
+		text: str(math.floor(root.holdTimer.value))
+		
+	# Rest Timer
+	Label:	
+		font_size: 70
+		center_x: root.width*3/5
+		center_y: root.center_y
+		text: str(math.floor(root.restTimer.value))
+		
+	# Pause Timer
+	Label:
+		font_size: 70
+		center_x: root.width*4/5
+		center_y: root.center_y
+		text: str(math.floor(root.pauseTimer.value))
+
