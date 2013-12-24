@@ -31,7 +31,7 @@ class Workout(object):
 		self.currentRep = 0
 		self.currentSet = 0
 		self.numberOfSets = 3
-	
+		
 
 # Counter class: Definitely dont need this.
 class Counter(Widget):
@@ -91,15 +91,34 @@ class TimerUI(Widget):
 	holdTimer = Timer()
 	restTimer = Timer()
 	pauseTimer = Timer()
-	
+	currentWorkout = Workout()
 	
 	# Handle Timer Logic
-	def startCorrectTimer(self):
+	def startNextTimer(self, *args):
+		# Choose correct timer
+		if self.currentWorkout.routine[self.currentWorkout.currentRep][0] == 'hold':
+			self.holdTimer.startTimer('decreasing', self.currentWorkout.routine[self.currentWorkout.currentRep][1], 1/60)
+		elif self.currentWorkout.routine[self.currentWorkout.currentRep][0] == 'rest':
+			self.restTimer.startTimer('decreasing', self.currentWorkout.routine[self.currentWorkout.currentRep][1], 1/60)
+		elif self.currentWorkout.routine[self.currentWorkout.currentRep][0] == 'pause':
+			self.pauseTimer.startTimer('decreasing', self.currentWorkout.routine[self.currentWorkout.currentRep][1], 1/60)
+		else:
+			print 'Invalid routine syntax : Unrecognized timer type : Exiting'
+			exit(0)
+			
+		# Increment rep
+		self.currentWorkout.currentRep += 1
+		
+		# Schedule next rep if it exists
+		if self.currentWorkout.currentRep < len(self.currentWorkout.routine):
+			Clock.schedule_once(self.startNextTimer, self.currentWorkout.routine[self.currentWorkout.currentRep - 1][1])
+		
 		
 	def startWorkout(self):
-		self.workout = Workout()
+		#self.currentWorkout = Workout
+		self.currentWorkout.currentRep = 0
+		self.startNextTimer()
 		
-	
 	#def refresh(self, dt):
 	#	if self.repCounter.active == True:
 	#		self.repCounter.decrement(dt)
@@ -112,16 +131,14 @@ class TimerUI(Widget):
 	#		
 	#	if self.pauseTimer.active == True:
 	#		self.pauseTimer.decrement(dt)
-		#print math.floor(self.holdTimer.displayedValue)
+	#	print math.floor(self.holdTimer.displayedValue)
 	pass
 	
 # Define App class
 class timerApp(App):
 	def build(self):
 		display = TimerUI()
-		ht = display.holdTimer
-		display.holdTimer.startTimer('decreasing', 5, 1/60)
-		#Clock.schedule_interval(display.refresh, 1/60)
+		display.startWorkout()
 		return display
 		
 		

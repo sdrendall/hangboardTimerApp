@@ -2,7 +2,7 @@
 #:import math math
 
 # Vestigal
-#<Timer>:
+<Timer>:
 	Label:
 		font_size: 70
 		center_x: self.center_x
@@ -24,24 +24,18 @@
 		center_y: root.center_y
 		# ceil/floor logic helps display the right number.
 		# Unfortunately ceil(-val) returns -0... need to fix
-		text: str(math.floor(root.holdTimer.value)) if\
-		 root.holdTimer.state == 'increasing' else \
-		 str(math.floor(root.holdTimer.value))
+		text: str(math.floor(root.holdTimer.value)) if root.holdTimer.state == 'increasing' else str(math.ceil(root.holdTimer.value))
 		
 	# Rest Timer
 	Label:	
 		font_size: 70
 		center_x: root.width*3/5
 		center_y: root.center_y
-		text: str(math.floor(root.restTimer.value)) if\
-		 root.restTimer.state == 'increasing' else \
-		 str(math.floor(root.restTimer.value))
+		text: str(math.floor(root.restTimer.value)) if root.restTimer.state == 'increasing' else str(math.ceil(root.restTimer.value))
 		
 	# Pause Timer
 	Label:
 		font_size: 70
 		center_x: root.width*4/5
 		center_y: root.center_y
-		text: str(math.floor(root.pauseTimer.value)) if\
-		 root.pauseTimer.state == 'increasing' else \
-		 str(math.floor(root.pauseTimer.value))
+		text: str(math.floor(root.pauseTimer.value)) if root.pauseTimer.state == 'increasing' else str(math.ceil(root.pauseTimer.value))
